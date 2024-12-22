@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THiJARI Dashboard</title>
+    <style>
+        body {
+            font-family: Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            overflow-x: hidden; /* Elakkan sebarang penolakan horizontal apabila sidebar terbuka */
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0; /* Sidebar tetap berada di kiri apabila dibuka */
+            height: 100%;
+            padding: 20px;
+            border-right: 1px solid #ddd;
+            transition: transform 0.3s ease; /* Smooth transition for the sidebar */
+            z-index: 1000; /* Ensure sidebar is on top */
+            box-sizing: border-box;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%); /* Hide sidebar when 'hidden' class is added */
+        }
+
+        .sidebar h1 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .sidebar .logo-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar .logo-container img {
+            max-height: 50px;
+            margin-right: 10px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            display: block;
+        }
+
+        .sidebar ul li a:hover {
+            color: green; /* Hover color */
+        }
+
+        /* Main Content Area */
+        .main-content {
+            margin-left: 0; /* Set the margin to zero when the sidebar is hidden */
+            padding: 20px;
+            transition: margin-left 0.3s ease; /* Smooth transition for main content */
+            margin-top: 20px; /* To avoid content being stuck to the top */
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .header .logo {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            width: 30px;
+            height: 21px;
+            justify-content: space-between;
+            cursor: pointer;
+            position: absolute;
+            left: 10px;
+            top: 20px;
+            z-index: 2000; /* Ensure hamburger button is always on top of sidebar */
+        }
+
+        .hamburger div {
+            height: 3px;
+            background-color: #333;
+            border-radius: 3px;
+        }
+
+        .header .dashboard-text {
+            font-size: 16px;
+            color: #333;
+            text-align: left;
+            font-weight: bold;
+            width: 100%; /* Ensure text spans full width */
+        }
+
+        .header .logout-container {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .header .logout-container img {
+            width: 20px; /* Make icon smaller */
+            height: 20px; /* Make icon smaller */
+            margin-right: 5px; /* Space between icon and text */
+        }
+
+        .header .logout-text {
+            font-size: 14px;
+            font-weight: normal;
+            color: #333;
+        }
+
+        /* Cards Layout */
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .card {
+            background-color: #fff;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: left;
+            width: 100%;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            font-weight: bold;
+        }
+
+        .highlight-green {
+            color: green;
+        }
+
+        .highlight-grey {
+            color: grey;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 14px;
+            color: #888;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                left: -250px; /* Initially hidden on mobile */
+            }
+
+            .sidebar.hidden {
+                left: 0; /* Show sidebar when 'hidden' class is removed */
+            }
+
+            .main-content {
+                margin-left: 0; /* Remove margin on small screens */
+            }
+
+            .header .logo {
+                height: 50px;
+            }
+
+            .cards-container {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .card {
+                width: 100%;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hamburger Menu (Three lines) -->
+    <div class="hamburger" onclick="toggleSidebar()">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="logo-container">
+            <img src="logo.webp" alt="Tabung Haji Logo">
+            <h1>TABUNG HAJI</h1>
+        </div>
+        <ul>
+            <li><a href="index.html">Laman Utama</a></li>
+            <li><a href="ringkasan.html">Ringkasan Akaun</a></li>
+            <li><a href="pindahan.html">Pindahan</a></li>
+            <li><a href="perkhidmatan_haji.html">Perkhidmatan Haji</a></li>
+            <li><a href="th_khairat.html">TH Khairat</a></li>
+            <li><a href="penamaan_pusaka_hibah.html">Penamaan/Pusaka/Hibah</a></li>
+            <li><a href="akaun_kanak_kanak.html">Akaun Kanak-kanak</a></li>
+            <li><a href="qurban_1446h.html">Qurban 1446H</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <img src="finger.png" alt="Logo" class="logo">
+            <div class="dashboard-text">
+                DASHBOARD SAYA | PROFIL SAYA | AKSES SAYA | PETI SURAT (2) | 
+                <div class="logout-container">
+                    <img src="keluar.jpg" alt="Logout Icon">
+                    <span class="logout-text">LOG KELUAR</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cards Layout -->
+        <div class="cards-container">
+            <div class="card">
+                <h3>Selamat Datang, MUHAMMAD IKHWAN BIN ZULPIKA ALI!</h3>
+                <p>Kali terakhir berjaya log masuk: 22/12/2024 10:00:44<br>
+                   Kali terakhir gagal log masuk: 08/10/2024 21:48:04</p>
+                <p>Anda ada <strong>2 pesanan</strong> baru yang belum dibaca.</p>
+            </div>
+
+            <div class="card">
+                <h3>Status Haji</h3>
+                <p>Anda belum mendaftar Haji. Sila klik <a href="#" class="link">sini</a> untuk mendaftar.</p>
+            </div>
+
+            <div class="card">
+                <h3>Pengumuman</h3>
+                <p>Tiada lagi pengumuman untuk THiJARI.</p>
+            </div>
+
+            <div class="card">
+                <h3>Ringkasan Akaun</h3>
+                <p>Sila tentukan 2 Akaun TH untuk dipaparkan di sini.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        &copy; 2024 Tabung Haji. All rights reserved.
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById("sidebar");
+            var mainContent = document.querySelector(".main-content");
+
+            sidebar.classList.toggle("hidden"); /* Toggle sidebar visibility */
+            if (sidebar.classList.contains("hidden")) {
+                mainContent.style.marginLeft = "0"; /* Ensure content stays left */
+            } else {
+                mainContent.style.marginLeft = "250px"; /* Move content to the right */
+            }
+        }
+    </script>
+
+</body>
+</html>
